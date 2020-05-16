@@ -8,6 +8,8 @@ import { View, Text, StyleSheet } from 'react-native'
 **/
 const FilterSettings = (props) => {
 
+
+
 const { container } = styles
  return(
   <View style={container}>
