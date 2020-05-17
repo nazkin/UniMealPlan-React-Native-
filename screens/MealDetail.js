@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
-
+import {HeaderButtons, Item} from 'react-navigation-header-buttons'
 import {MEALS} from '../data/dummy'
+import FavoriteBtn from '../components/HeaderButtonFav'
 /**
 * @author
 * @function MealDetail
@@ -21,7 +22,13 @@ const mealObject = MEALS.find(meal => meal.id === idMeal);
 
 MealDetail['navigationOptions'] = (paramData)=> {
   return {
-    title: props.navigation.getParam('mealName')
+    title: paramData.navigation.getParam('mealName'),
+    headerRight: ()=>  <HeaderButtons HeaderButtonComponent={FavoriteBtn}>
+                        <Item
+                         title="Favorite"
+                         iconName="ios-star-outline"
+                         onPress={()=> console.log('Favorite')} />
+                       </HeaderButtons>
   }
 }
 const styles = StyleSheet.create({
