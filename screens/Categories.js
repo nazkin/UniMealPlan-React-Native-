@@ -13,7 +13,8 @@ const renderGridElement = (el)=> {
              
             style={gridItem}
             onPress={()=> props.navigation.navigate({routeName: 'Meals', params: {
-                categoryId: el.item.id
+                categoryId: el.item.id,
+                categoryTitle: el.item.title
             }})}>
                 <View style={{...styles.eachCategory, ...{backgroundColor: el.item.color}}}>
                     <Text style={styles.categoryName}>{el.item.title}</Text>
@@ -26,7 +27,11 @@ const renderGridElement = (el)=> {
         <FlatList  data={CATEGORIES} renderItem={renderGridElement} numColumns={2}/>
   )
 }
-
+Categories["navigationOptions"] = () => {
+    return {
+        title: "Select Category"
+    }
+}
 
 const styles = StyleSheet.create({
 
