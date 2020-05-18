@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
    flex: 1,
    justifyContent: 'flex-start',
    alignItems: 'center',
-   paddingVertical: 10
+   paddingVertical: 10, backgroundColor: "whitesmoke"
   },
   mealView:{
     width: '100%',

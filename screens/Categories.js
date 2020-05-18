@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native'
 import {CATEGORIES} from '../data/dummy'
 import colors from '../constants/colors'
-
-
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import HeaderButton from '../components/HeaderButtonFav';
 const Categories = (props) => {
 
 
@@ -27,9 +27,16 @@ const renderGridElement = (el)=> {
         <FlatList  data={CATEGORIES} renderItem={renderGridElement} numColumns={2}/>
   )
 }
-Categories["navigationOptions"] = () => {
+Categories["navigationOptions"] = (navData) => {
     return {
-        title: "Select Category"
+        title: "Select Category",
+        headerLeft: ()=> {
+            return  <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item title="Menu" iconName="ios-menu" onPress={()=>{
+                            navData.navigation.toggleDrawer();
+                        }}/>
+                    </HeaderButtons>
+        }
     }
 }
 
@@ -40,7 +47,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 20, 
-    height: 150
+    height: 150, 
+    backgroundColor: 'whitesmoke'
   },
   eachCategory: {
       width: '100%',
