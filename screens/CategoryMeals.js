@@ -1,13 +1,17 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, ImageBackground } from 'react-native'
-import {CATEGORIES, MEALS} from '../data/dummy'
-import Colors from '../constants/colors'
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { useSelector} from 'react-redux';
+import Colors from '../constants/colors';
 
 
 const CategoryMeals = (props) => {
 const titleId = props.navigation.getParam('categoryId');
 
-const categoryMeals = MEALS.filter(meal=> meal.categoryIds.indexOf(titleId) >= 0)
+const displayedMeals = useSelector(state => {
+  return state.meals.filteredMeals
+})
+
+const categoryMeals = displayedMeals.filter(meal=> meal.categoryIds.indexOf(titleId) >= 0)
 
 const mealSelectionHandler = (id, name) => {
   props.navigation.navigate({routeName: 'DetailedMeal',params: {

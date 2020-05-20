@@ -1,9 +1,22 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import * as Font from 'expo-font'
-import {AppLoading} from 'expo'
+import { } from 'react-native';
+import * as Font from 'expo-font';
+import {AppLoading} from 'expo';
 import MealsNavStack from './navigation/AppNavigator';
-import {enableScreens} from 'react-native-screens'
+import {enableScreens} from 'react-native-screens';
+import mealsReducer from './store/reducers/mealsReducer';
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+
+enableScreens();
+
+//Connecting Redux to our application
+const rootReducer = combineReducers({
+  meals: mealsReducer
+})
+const store = createStore(rootReducer)
+//********************
+
 const fetchFonts = ()=>{
   return Font.loadAsync({
       'open-sans': require('./assets/fonts/Quicksand-Regular.otf'),
@@ -11,7 +24,7 @@ const fetchFonts = ()=>{
       'open-sans-bold': require('./assets/fonts/Quicksand-Bold.otf')
   }) 
 }
-enableScreens();
+
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -20,15 +33,10 @@ export default function App() {
   }
 
   return (
+    <Provider store={store}>
           <MealsNavStack />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+

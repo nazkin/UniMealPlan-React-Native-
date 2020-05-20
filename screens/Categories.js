@@ -1,7 +1,7 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native'
-import {CATEGORIES} from '../data/dummy'
-import colors from '../constants/colors'
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import {CATEGORIES} from '../data/dummy';
+import colors from '../constants/colors';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButtonFav';
 const Categories = (props) => {

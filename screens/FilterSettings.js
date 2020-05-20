@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { View, Text, StyleSheet, Switch} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButtonFav';
 import Colors from '../constants/colors';
 import FilterSwitch from '../components/FilterSwitch';
+import {useDispatch} from 'react-redux';
+import {setFilters} from '../store/actions/mealsActions';
 /**
 * @author
 * @function FilterSettings
@@ -16,14 +18,16 @@ const FilterSettings = (props) => {
   const [vegetarian, setVegetarian] = useState(false);
   const [lactoseFree, setLactoseFree] = useState(false);
 
+  const dispatch = useDispatch();
+
   const savingFilters = useCallback(()=>{
     const appliedValues = {
-      isGluten: glutenFree,
-      isVegan: vegan,
-      isVegetarian: vegetarian,
-      isLactose: lactoseFree
+      glutenFree: glutenFree,
+      vegan: vegan,
+      vegetarian: vegetarian,
+      lactoseFree: lactoseFree
     };
-    console.log(appliedValues);
+    dispatch(setFilters(appliedValues));
   },[glutenFree, vegan, vegetarian, lactoseFree]);
 
   useEffect(()=> {
@@ -67,7 +71,7 @@ FilterSettings["navigationOptions"] = (navData) => {
       },
       headerRight: ()=> {
         return  <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                    <Item title="FilterState" iconName="ios-checkbox-outline" onPress={navData.navigation.getParam('save')}/>
+                    <Item title="FilterState" iconName="ios-refresh" onPress={navData.navigation.getParam('save')}/>
                 </HeaderButtons>
     },
 

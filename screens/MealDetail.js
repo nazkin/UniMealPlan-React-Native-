@@ -1,18 +1,41 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button, Image , ScrollView} from 'react-native'
-import {HeaderButtons, Item} from 'react-navigation-header-buttons'
-import {MEALS} from '../data/dummy'
-import FavoriteBtn from '../components/HeaderButtonFav'
-import Colors from '../constants/colors'
+import React, {useCallback, useEffect} from 'react';
+import { View, Text, StyleSheet, Image , ScrollView} from 'react-native';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import {useSelector, useDispatch} from 'react-redux';
+import FavoriteBtn from '../components/HeaderButtonFav';
+import Colors from '../constants/colors';
+import {toggleFavorite } from '../store/actions/mealsActions';
+
 /**
 * @author
 * @function MealDetail
 **/
+
+
 const MealDetail = (props) => {
 
-
+const displayedMeals = useSelector(state => state.meals.meals);
 const idMeal = props.navigation.getParam('mealId');
-const mealObject = MEALS.find(meal => meal.id === idMeal);
+const mealObject = displayedMeals.find(meal => meal.id === idMeal);
+//Checks if the detailed meal has been favorited by the user
+const isFavorited = useSelector(state => {
+  return state.meals.favoriteMeals.some(meal => meal.id === idMeal)
+})
+
+const dispatch = useDispatch()
+
+const toggleFavoriteMeal = useCallback(() => {
+  dispatch(toggleFavorite(idMeal));
+}, [idMeal])
+
+useEffect(()=> {
+  props.navigation.setParams({toggleFavorite: toggleFavoriteMeal});
+}, [toggleFavoriteMeal]);
+//Passing the favorited status of the displayed meal to the header element
+useEffect(()=> {
+  props.navigation.setParams({isFaved: isFavorited})
+}, [isFavorited])
+
 const ingredients = mealObject.ingredients.map(ing=> {
   return (
     <Text style={styles.eachIng} key={ing}>
@@ -46,20 +69,19 @@ const steps = mealObject.steps.map(step=> {
     <View style={styles.stepsView}>
       {steps}
     </View>
-    {/* <Text>{mealObject.title}</Text>
-    <Button title="Back to Categories" onPress={()=> props.navigation.popToTop()} /> */}
   </ScrollView> 
   )
 }
 
 MealDetail['navigationOptions'] = (paramData)=> {
+  const isMealFavorite = paramData.navigation.getParam('isFaved');
   return {
     title: paramData.navigation.getParam('mealName'),
     headerRight: ()=>  {return (<HeaderButtons HeaderButtonComponent={FavoriteBtn}>
                         <Item
                          title="Favorite"
-                         iconName="ios-star-outline"
-                         onPress={()=> console.log('Favorite')} />
+                         iconName={isMealFavorite ?"ios-star": "ios-star-outline" }
+                         onPress={paramData.navigation.getParam('toggleFavorite')} />
                        </HeaderButtons>)}
   }
 }

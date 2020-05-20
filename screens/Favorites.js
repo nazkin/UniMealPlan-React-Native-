@@ -1,7 +1,7 @@
-import React from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native'
-import {MEALS} from "../data/dummy"
-import Colors from '../constants/colors'
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import {useSelector} from 'react-redux';
+import Colors from '../constants/colors';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButtonFav';
 /**
@@ -10,7 +10,8 @@ import HeaderButton from '../components/HeaderButtonFav';
 **/
 const Favorites = (props) => {
 
-const FavMeals = MEALS.filter(meal=> meal.id === 'm1' || meal.id === 'm3');
+
+const FavMeals = useSelector(state => state.meals.favoriteMeals);
 
 const viewMealDetail = (id, name)=> {
   props.navigation.navigate({routeName: 'DetailedMeal',params: {
@@ -35,10 +36,15 @@ const renderFavorites = (favs) => {
             
           </TouchableOpacity>
 }
+  //The main section depends on wheather favorites exist ot not
+let favoritesValue = <FlatList style={{width: '95%'}} data={FavMeals} renderItem={renderFavorites} numColumns={1}/>
+if(!FavMeals || FavMeals.length === 0){
+  favoritesValue = <Text>No favorited meals have been added</Text>
+}
 
  return(
   <View style={styles.container}>
-    <FlatList style={{width: '95%'}} data={FavMeals} renderItem={renderFavorites} numColumns={1}/>
+     {favoritesValue}
   </View>
   )
 }
